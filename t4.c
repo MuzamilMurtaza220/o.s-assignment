@@ -25,6 +25,54 @@ int main() {
         if (id == 0) {
             sum =sum + add(100, 200, arry);
         }
+else {id = fork();
+        if (id == 0) {
+            sum =sum + add(200, 300, arry);
+        }
+else{
+    id = fork();
+        if (id == 0) {
+            sum =sum + add(300, 400, arry);
+        }
+else{
+id = fork();
+        if (id == 0) {
+            sum =sum + add(400, 500, arry);
+        }
+else{
+id = fork();
+        if (id == 0) {
+            sum =sum + add(500, 600, arry);
+        }
+else{
+id = fork();
+        if (id == 0) {
+            sum =sum + add(600, 700, arry);
+        }
+else{
+id = fork();
+        if (id == 0) {
+            sum =sum + add(700, 800, arry);
+        }
+else{
+id = fork();
+        if (id == 0) {
+            sum =sum + add(800, 900, arry);
+        }
+else{
+id = fork();
+        if (id == 0) {
+            sum =sum + add(900, 1000, arry);
+        }
+}
+}
+
+}
+}
+}
+}
+}}
+
     }
 
 
