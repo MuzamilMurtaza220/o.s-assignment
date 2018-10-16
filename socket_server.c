@@ -1,37 +1,43 @@
 #include<stdio.h>
+#include<string.h>
 #include<stdlib.h>
-
+#include<unistd.h>
 #include<sys/types.h>
 #include<sys/socket.h>
-
 #include<netinet/in.h>
+#include<errno.h>
+#include<arpa/inet.h>
+int main(){
+int sock,cli,true=1;
+unsigned int len;
+char mesg[]="Hello World";
+int sent;
+struct sockaddr_in server,client;
+if((sock=socket(AF_INET,SOCK_STREAM,0 )==-1)){
+perror("socket: ");
+exit(-1);
+}
+if (setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&true,sizeof(int)) == -1) {
+            perror("Setsockopt");
+            exit(-1);
+        }
+server.sin_family=AF_INET;
+server.sin_port=htons(10000);
+server.sin_addr.s_addr=INADDR_ANY;
+bzero(&server.sin_zero,8);
+len=sizeof(struct sockaddr_in);
+if((bind(sock,(struct sockaddr *)&server,len)==-1)){
+perror("bind: ");
+exit(-1);
+}
+if((listen(sock,5))==-1){perror("listen: ");exit(-1);}
+while(1){
+if((cli=accept(sock,(struct sockaddr *)&client, &len))==-1){perror("accept: ");exit(-1);}
 
-int main(int argc, char *argv[])
-{
-	char server_message[256] = "You have reached the server";
-	
-	//create the server socket
-	int server_socket;
-	server_socket = socket(AF_INET, SOCK_STREAM, 0);
-	
-	//define the server address
-	struct sockaddr_in server_address;
-	server_address.sin_family = AF_INET;
-	server_address.sin_port = htons(9302);
-	server_address.sin_addr.s_addr = INADDR_ANY;
-	
-	//bind teh socket to our specified IP and port
-	bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address));
-	
-	listen(server_socket, 5);
-	
-	int client_socket = accept(server_socket, NULL, NULL);
-	
-	//send message
-	send(client_socket , server_message, sizeof(server_message), 0);
-	
-	//close the socket
-	//close(server_socket);
 
-	return 0;
+sent=send(cli,mesg,strlen(mesg),0);
+printf("sent %d bytes to client : %s\n",sent,inet_ntoa(client.sin_addr));
+close(cli);
+}
+return 0;
 }
