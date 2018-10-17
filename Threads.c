@@ -12,6 +12,10 @@ int main(){
 	for(int i = 0; i < 1000; i++){
 		arry[i] = i+1;
 	}
+
+	//for(int i = 0; i < 1000; i++){
+	//	printf(" %d",arry[i] );
+	//}
 	pthread_create(&thread1, NULL, sum_chunks, (void*)(0));
 	pthread_create(&thread2, NULL, sum_chunks, (void*)(100));
 	pthread_create(&thread3, NULL, sum_chunks, (void*)(200));
@@ -50,8 +54,8 @@ void * sum_chunks(void *args){
 	int temp = 0;
 	int start = (int)args;
 	int end=start+chunk;
-	for(int i = start; i <= end; i++){
-		temp +=  i;
+	for(int i = start; i < end; i++){
+		temp +=  arry[i];
 	}
 	return ((void*)temp);
 }
